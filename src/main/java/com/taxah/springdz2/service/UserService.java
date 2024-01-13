@@ -18,24 +18,40 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User saveUser(User user){
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    public void deleteById(int id){
+    /**
+     * Deletes a user by their ID using the UserRepository.
+     *
+     * @param id The ID of the user to be deleted.
+     */
+    public void deleteById(int id) {
         userRepository.deleteById(id);
     }
 
-    public User getOne(int id){
-       return userRepository.getOne(id);
+    /**
+     * Retrieves information about a user by their ID using the UserRepository.
+     *
+     * @param id The ID of the user to be retrieved.
+     * @return A User object containing information about the retrieved user.
+     */
+    public User getOne(int id) {
+        return userRepository.getOne(id);
     }
-    //public void deleteById(int id)
 
-    public User update(User user){
+    /**
+     * Updates user information using the UserRepository.
+     *
+     * @param user The User object containing updated information.
+     * @return The updated User object.
+     */
+    public User update(User user) {
         return userRepository.update(user);
     }
 }

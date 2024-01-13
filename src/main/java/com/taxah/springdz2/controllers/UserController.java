@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String findAll(Model model){
+    public String findAll(Model model) {
         List<User> users = userService.findAll();
 
 
@@ -32,31 +32,50 @@ public class UserController {
     }
 
     @GetMapping("/user-create")
-    public String createUserForm(User user){
+    public String createUserForm(User user) {
         return "user-create";
     }
 
     @PostMapping("/user-create")
-    public String createUser(User user){
+    public String createUser(User user) {
         userService.saveUser(user);
         return "redirect:/users";
     }
 
+    /**
+     * Handles HTTP GET requests for deleting a user by their ID.
+     *
+     * @param id The ID of the user to be deleted.
+     * @return A redirection to the "/users" endpoint after deleting the user.
+     */
     @GetMapping("user-delete/{id}")
-    public String deleteUser(@PathVariable("id") int id){
+    public String deleteUser(@PathVariable("id") int id) {
         userService.deleteById(id);
         return "redirect:/users";
     }
 
+    /**
+     * Handles HTTP GET requests for retrieving information about a specific user by their ID.
+     *
+     * @param id    The ID of the user to be retrieved.
+     * @param model The Model to which the retrieved user information is added.
+     * @return The view name "user-update" to display the user information for updating.
+     */
     @GetMapping("/user-update/{id}")
-    public String editUser(@PathVariable("id") int id, Model model){
+    public String getOne(@PathVariable("id") int id, Model model) {
         User user = userService.getOne(id);
         model.addAttribute("user", user);
         return "user-update";
     }
 
+    /**
+     * Handles HTTP POST requests for updating user information.
+     *
+     * @param user The User object containing updated information.
+     * @return A redirection to the "/users" endpoint after updating the user.
+     */
     @PostMapping("/user-update")
-    public String updateUser(User user){
+    public String updateUser(User user) {
         userService.update(user);
         return "redirect:/users";
     }
