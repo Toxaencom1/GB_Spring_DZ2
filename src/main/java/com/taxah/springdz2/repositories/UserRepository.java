@@ -1,7 +1,9 @@
 package com.taxah.springdz2.repositories;
 
 
+import com.taxah.springdz2.config.MagicProperties;
 import com.taxah.springdz2.model.User;
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -9,16 +11,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@AllArgsConstructor
 public class UserRepository {
 
     private final JdbcTemplate jdbc;
 
-    public UserRepository(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-    }
+    private final MagicProperties magicProperties;
 
     public List<User> findAll() {
-        String sql = "SELECT * FROM userTable";
+        String sql = magicProperties.getFindAll();
 
         RowMapper<User> userRowMapper = (r, i) -> {
             User rowObject = new User();
@@ -32,7 +33,7 @@ public class UserRepository {
     }
 
     public User save(User user) {
-        String sql = "INSERT INTO userTable (firstName, lastName) VALUES (?, ?)";
+        String sql = magicProperties.getSave();
         jdbc.update(sql, user.getFirstName(), user.getLastName());
         return user;
     }
@@ -43,7 +44,7 @@ public class UserRepository {
      * @param id The ID of the user to be deleted.
      */
     public void deleteById(int id) {
-        String sql = "DELETE FROM userTable WHERE id=?";
+        String sql = magicProperties.getDeleteById();
         jdbc.update(sql, id);
     }
 
@@ -54,7 +55,7 @@ public class UserRepository {
      * @return A User object containing information about the retrieved user.
      */
     public User getOne(int id) {
-        String sql = "SELECT id, firstName, lastName FROM userTable WHERE id=?";
+        String sql = magicProperties.getGetOne();
         return jdbc.queryForObject(sql, (r, i) ->
                         new User(
                                 r.getInt("id"),
@@ -72,7 +73,7 @@ public class UserRepository {
      * @return The updated User object.
      */
     public User update(User user) {
-        String sql = "UPDATE userTable SET firstName = ?, lastName = ? WHERE id = ?";
+        String sql = magicProperties.getUpdate();
         jdbc.update(sql, user.getFirstName(), user.getLastName(), user.getId());
         return user;
     }
